@@ -7,15 +7,13 @@ class Game {
             parentElement
         });
 
-        let headerElement = createAndAppend({
+        this.headerElement = createAndAppend({
             className: 'header',
             parentElement: gameFieldElement
         });
 
         //рейтинг
         this.rating = 0;
-
-        headerElement.innerHTML = 'Rating: ' + this.rating;
 
 
         let fieldElement = createAndAppend({
@@ -29,7 +27,7 @@ class Game {
         for(let i = 0; i < size; i++){
             this.field[i] = [];
             for(let j = 0; j < size; j++){
-                this.field[i][j] = new Box(fieldElement);
+                this.field[i][j] = new Box(fieldElement, this);
             }
         }
 
@@ -51,6 +49,19 @@ class Game {
         }.bind(this);
 
         console.log(this.field);
+    }
+
+    set rating(value){
+        this._rating = value;
+        this.headerElement.innerHTML = 'Rating: ' + value;
+    }
+
+    get rating(){
+        return this._rating;
+    }
+
+    addRating(value){
+        this.rating += value;
     }
 
     //заполнение массива раедомными числами

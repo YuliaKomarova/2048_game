@@ -1,5 +1,7 @@
 class Box{
-    constructor(fieldElement) {
+    constructor(fieldElement, game) {
+        this.game = game;
+
         this.element = createAndAppend({
             className: 'box',
             parentElement: fieldElement
@@ -31,7 +33,12 @@ class Box{
 
     //умножение числа в ячейке на 2
     merge(box){
+        if(this.value){
+            this.game.addRating(this.value + box.value);
+        }
+
         this.value += box.value;
+
         box.clear();
     }
 
