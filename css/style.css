@@ -1,3 +1,8 @@
+* {
+    margin: 0; 
+    padding: 0;
+}
+
 h1 {
     display: flex;
     justify-content: center;
@@ -12,25 +17,28 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-position: center;
+    background: url(/img/background.jpg) no-repeat;
+    background-size: cover;
 }
 
     .game .header {
+        text-align: center;
         height: 15vmin;
         width: 80vmin;
         font-size: 10vmin;
-        background-color: cornflowerblue;
         box-sizing: border-box;
-        border-bottom: 1px solid #000;
+        /* border-bottom: 1px solid #000; */
     }
 
 
     .game .field {
         display: flex;
         flex-direction: row;
+        position: relative;
         flex-wrap: wrap;
         width: 80vmin;
-        height: 80vmin;
-        background-color: blanchedalmond;
+        height: 85vmin;
     }
 
     .game .field .box {
@@ -43,9 +51,47 @@ h1 {
         height: 18vmin;
         margin: 1vmin;
         box-sizing: border-box;
-        border: 2px solid coral;
+        border: 2px solid #d0a9a0;
         border-radius: 2vmin;
         color: snow;
         font-size: 10vmin;
         color: black;
-}
+        background-image: none;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .game .field .box[data-ship = '2']{
+        background-color:#dce0cd;
+    }
+    .game .field .box[data-ship = '4']{
+        background-color:#ccdb86;
+    }
+    .game .field .box[data-ship = '8']{
+        background-color:#44af92;
+    }
+    .game .field .box[data-ship = '16']{
+        background-color:#016367;
+    }
+    .game .field .box[data-ship = '32']{
+        background-color:#7de8ea;
+    }
+    .game .field .box[data-ship = '64']{
+        background-color:#7cbdc9;
+    }
+    .game .field .box[data-ship = '128']{
+        background-color:#d0d0b8;
+    }
+    .game .field .box[data-ship = '256']{
+        background-color:#afbaa3;
+    }
+    .game .field .box[data-ship = '512']{
+        background-color:#a7b5b7;
+    }
+    .game .field .box[data-ship = '1024']{
+        background-color:#72a2ac;
+    }
+    .game .field .box[data-ship = '2048']{
+        background-color:#9fedd4;
+    }

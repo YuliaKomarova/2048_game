@@ -53,7 +53,7 @@ class Game {
 
     set rating(value){
         this._rating = value;
-        this.headerElement.innerHTML = 'Rating: ' + value;
+        this.headerElement.innerHTML = 'Рейтинг: ' + value;
     }
 
     get rating(){
