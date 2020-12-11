@@ -2,6 +2,8 @@ class Box{
     constructor(fieldElement, game) {
         this.game = game;
 
+        this.fieldElement = fieldElement;
+
         this.element = createAndAppend({
             className: 'box',
             parentElement: fieldElement
@@ -12,10 +14,10 @@ class Box{
             this.spawn();
         }
 
-        this.element.onclick = function(e) {
-            this.merge();
-        }.bind(this);
-        //or  this.element.onclick = this.merge.bind(this);
+        // this.element.onclick = function(e) {
+        //     this.merge();
+        // }.bind(this);
+        // //or  this.element.onclick = this.merge.bind(this);
     }
 
     get value(){
@@ -38,6 +40,8 @@ class Box{
             this.game.addRating(this.value + box.value);
         }
 
+        new AnimateBox (box, this);
+
         this.value += box.value;
 
         box.clear();
@@ -53,5 +57,25 @@ class Box{
 
     get isEmpty() {
         return this.value == 0;
+    }
+}
+
+
+class AnimateBox{
+    constructor(fromBox, toBox) {
+        this.element = createAndAppend({className: 'box animate'});
+		this.element.setAttribute('data-ship', fromBox.element.getAttribute('data-ship'));
+
+        this.element.style.top = fromBox.element.offsetTop + 'px';
+        this.element.style.left = fromBox.element.offsetLeft + 'px';
+
+        fromBox.fieldElement.appendChild(this.element);
+
+        this.element.style.top = toBox.element.offsetTop + 'px';
+        this.element.style.left = toBox.element.offsetLeft + 'px';
+
+        setTimeout(function() {
+            fromBox.fieldElement.removeChild(this.element);
+        }.bind(this), 1000)
     }
 }
