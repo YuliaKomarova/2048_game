@@ -16,20 +16,13 @@ class Game {
         this.rating = 0;
 
 
-        let fieldElement = createAndAppend({
+        this.fieldElement = createAndAppend({
             className: 'field',
             parentElement: gameFieldElement
         });
 
         //Заполнение поля
-        this.field = [];
-
-        for(let i = 0; i < size; i++){
-            this.field[i] = [];
-            for(let j = 0; j < size; j++){
-                this.field[i][j] = new Box(fieldElement, this);
-            }
-        }
+        this.restart();
 
         window.addEventListener('keyup', function(e) {
             switch(e.keyCode) {
@@ -47,11 +40,6 @@ class Game {
                     break;
             }
         }.bind(this));
-
-        this.gameOverElement = createAndAppend({
-            className: 'game-over',
-            parentElement: fieldElement
-        })
     }
 
     set rating(value){
@@ -81,6 +69,26 @@ class Game {
         if(emptyBox.length){
             emptyBox[getRangomInt(0, emptyBox.length - 1)].spawn();//в рандомную пустую клетку пишу 2 или 4
         }
+    }
+
+    restartGame(result){
+        this.gameOverElement = createAndAppend({
+            className: 'game-over',
+            parentElement: this.fieldElement
+        })
+
+        if (result == 'vin'){
+            this.gameOverElement.innerHTML = 'Вы победили!';
+        } else {
+            this.gameOverElement.innerHTML = 'Игра окончена!';
+        }
+
+        this.restartElement = createAndAppend({
+			className: 'restart',
+			parentElement: this.gameOverElement,
+			value: 'Новая игра'
+        }, 'button');
+            this.restartElement.addEventListener('click', this.restart.bind(this));
     }
 
     gameOwer() {
@@ -113,9 +121,9 @@ class Game {
             }
         }
         if (vin) {
-            this.gameOverElement.innerHTML = 'Вы победили!';
+            this.restartGame(vin);
         } else if (losing) {
-            this.gameOverElement.innerHTML = 'Игра окончена!'; 
+            this.restartGame(losing);
         }
     }
 
@@ -275,4 +283,16 @@ class Game {
         return key == 0;
     }
 
+    restart() {
+        this.fieldElement.innerHTML = '';
+        this.rating = 0;
+        this.field = [];
+
+        for(let i = 0; i < this.size; i++){
+            this.field[i] = [];
+            for(let j = 0; j < this.size; j++){
+                this.field[i][j] = new Box(this.fieldElement, this);
+            }
+        }
+    }
 }
