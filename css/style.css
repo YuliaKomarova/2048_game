@@ -1,12 +1,7 @@
 * {
     margin: 0; 
     padding: 0;
-}
-
-h1 {
-    display: flex;
-    justify-content: center;
-    text-align: center;
+    font-family: 'Martel', serif;
 }
 
 .game {
@@ -23,12 +18,19 @@ h1 {
 }
 
     .game .header {
-        text-align: center;
+        display: flex;
+        flex-direction: row;
         height: 15vmin;
-        width: 80vmin;
+        width: 100%;
         font-size: 10vmin;
         box-sizing: border-box;
-        /* border-bottom: 1px solid #000; */
+        justify-content: center;
+        flex-grow: 0;
+    }
+
+    .game .header .restart {
+        margin: 0 20px;
+        
     }
 
 
@@ -64,6 +66,19 @@ h1 {
         background-size: cover;
         color: transition;
         transition: background-color 0.2s ease-in-out;
+    }
+
+    .game .field .game-over{
+        display: flex;
+        position: absolute;
+        z-index: 100;
+        text-align: center;
+        color:black;
+        align-items: center;
+        height: 99%;
+        font-size: 16vmin;
+        border-radius: 2vmin;
+        background:rgba(238, 228, 218, 0.9);
     }
 
     @keyframes hide {

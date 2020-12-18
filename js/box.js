@@ -13,11 +13,6 @@ class Box{
         if(Math.random() > 0.8) {
             this.spawn();
         }
-
-        // this.element.onclick = function(e) {
-        //     this.merge();
-        // }.bind(this);
-        // //or  this.element.onclick = this.merge.bind(this);
     }
 
     get value(){
@@ -26,7 +21,7 @@ class Box{
     set value(value){
         this._value = value;
         this.element.innerHTML = value == 0 ? '' : value; //печать в ячейку 2/4 или ничего
-        this.element.setAttribute('data-ship', value);
+        this.element.setAttribute('data-ship', value); //добавление атрибута data-ship (закрашивание ячеек)
     }
 
     //очистка ячейки
@@ -52,7 +47,7 @@ class Box{
     }
 
     spawn(){
-        this.value = Math.random() > 0.5 ? 4 : 2;
+        this.value = Math.random() > 0.5 ? 4 : 2;//2 or 4
     }
 
     get isEmpty() {

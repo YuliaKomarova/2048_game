@@ -21,7 +21,7 @@ class Game {
             parentElement: gameFieldElement
         });
 
-        //создание двумерного массива и его заполнение
+        //Заполнение поля
         this.field = [];
 
         for(let i = 0; i < size; i++){
@@ -48,12 +48,15 @@ class Game {
             }
         }.bind(this));
 
-        console.log(this.field);
+        this.gameOverElement = createAndAppend({
+            className: 'game-over',
+            parentElement: fieldElement
+        })
     }
 
     set rating(value){
         this._rating = value;
-        this.headerElement.innerHTML = 'Рейтинг: ' + value;
+        this.headerElement.innerHTML = 'Счёт: ' + this._rating;
     }
 
     get rating(){
@@ -64,9 +67,9 @@ class Game {
         this.rating += value;
     }
 
-    //заполнение массива раедомными числами
+    //заполнение массива рандомными числами
     spawnUnit() {
-        let emptyBox = []
+        let emptyBox = []//создание пустого массива
         for(let i = 0; i < this.field.length; i++){
             for(let j = 0; j < this.field[i].length; j++){
                 if(!this.field[i][j].value){
@@ -76,9 +79,43 @@ class Game {
         }
 
         if(emptyBox.length){
-            emptyBox[getRangomInt(0, emptyBox.length - 1)].spawn();
-        } else{
-            alert('You lose!');
+            emptyBox[getRangomInt(0, emptyBox.length - 1)].spawn();//в рандомную пустую клетку пишу 2 или 4
+        }
+    }
+
+    gameOwer() {
+        let losing = true;
+        let vin = false;
+        for(let i = 0; i < this.size; i++){
+            for(let j = 0; j < this.size; j++){
+                if (this.field[i][j].value == '') {
+                    losing = false;
+                    break;
+                } else if (this.field[i][j].value == 2048){
+                    vin = true;
+                }
+            }
+        }
+        for(let i = 0; i < this.size; i++){
+            for(let j = 0; j < this.size - 1; j++){
+                if(this.field[i][j].value == this.field[i][j+1].value) {
+                    losing = false;
+                    break;
+                }
+            }
+        }
+        for(let i = 0; i < this.size; i++){
+            for(let j = 0; j < this.size - 1; j++){
+                if(this.field[j][i].value == this.field[j+1][i].value) {
+                    losing = false;
+                    break;
+                }
+            }
+        }
+        if (vin) {
+            this.gameOverElement.innerHTML = 'Вы победили!';
+        } else if (losing) {
+            this.gameOverElement.innerHTML = 'Игра окончена!'; 
         }
     }
 
@@ -86,7 +123,7 @@ class Game {
         let hasMoved = false;
         for(let i = 0; i < this.size; i++){
             for(let j = this.size - 2; j >= 0; j--){
-                let currentBox = this.field[i][j];
+                let currentBox = this.field[i][j];//текущая ячейка
                 if(currentBox.isEmpty){
                     continue;
                 }
@@ -96,38 +133,27 @@ class Game {
 
                     let nextBox = this.field[i][nextBoxKey];
                     if (!nextBox.isEmpty || this.isLastKey(nextBoxKey)){
-                        if((nextBox.isEmpty && this.isLastKey(nextBoxKey)) //Последняя строка или пустое значение
-                            || nextBox.isSameTo(currentBox)){
+                        if((nextBox.isEmpty && this.isLastKey(nextBoxKey)) //Последняя ячейка или пустое значение
+                            || nextBox.isSameTo(currentBox)){//или их значения равны
                                 this.field[i][nextBoxKey].merge(currentBox);
                                 hasMoved = true;
-                            } else if(!nextBoxKey.isEmpty && nextBoxKey - 1 != j){
+                            } else if(!nextBoxKey.isEmpty && nextBoxKey - 1 != j){//не пустая ячйка и они не равны
                                 this.field[i][nextBoxKey - 1].merge(currentBox);
                                 hasMoved = true;
                             }
-
                         break;
                     }
                     nextBoxKey++;
                     nextBox = this.field[i][nextBoxKey];
                 }
-
             }
         }
         
         if (hasMoved) {
             this.spawnUnit();
         }
-
+        this.gameOwer();
     }
-
-    isLastKey(key){
-        return key == (this.size - 1);
-    }
-
-    isFirstKey(key){
-        return key == 0;
-    }
-
 
     moveLeft() {
         let hasMoved = false;
@@ -157,20 +183,19 @@ class Game {
                     nextBoxKey--;
                     nextBox = this.field[i][nextBoxKey];
                 }
-
             }
         }
         
         if (hasMoved) {
             this.spawnUnit();
         }
-
+        this.gameOwer();
     }
 
     moveDown() {
         let hasMoved = false;
-        for(let j = 0; j < this.size; j++){
-            for(let i = this.size - 2; i >= 0; i--){
+        for(let i = this.size - 2; i >= 0; i--){
+            for(let j = 0; j < this.size; j++){
                 let currentBox = this.field[i][j];
                 if(currentBox.isEmpty){
                     continue;
@@ -195,21 +220,20 @@ class Game {
                     nextBoxKey++;
                     nextBox = this.field[nextBoxKey][j];
                 }
-
             }
         }
         
         if (hasMoved) {
             this.spawnUnit();
         }
-
+        this.gameOwer();
     }
 
     moveUp() {
         let hasMoved = false;
 
-        for(let j = 0; j < this.size; j++){
-            for(let i = 1; i < this.size; i++){
+        for(let i = 1; i < this.size; i++){
+            for(let j = 0; j < this.size; j++){
                 let currentBox = this.field[i][j];
                 if(currentBox.isEmpty){
                     continue;
@@ -234,14 +258,21 @@ class Game {
                     nextBoxKey--;
                     nextBox = this.field[nextBoxKey][j];
                 }
-
             }
         }
         
         if (hasMoved) {
             this.spawnUnit();
         }
+        this.gameOwer();
+    }
 
+    isLastKey(key){
+        return key == (this.size - 1);
+    }
+
+    isFirstKey(key){
+        return key == 0;
     }
 
 }
