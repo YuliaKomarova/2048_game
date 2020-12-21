@@ -71,27 +71,24 @@ class Game {
         }
     }
 
-    restartGame(result){
+    restartGame(){
         this.gameOverElement = createAndAppend({
             className: 'game-over',
             parentElement: this.fieldElement
         })
 
-        if (result == 'vin'){
-            this.gameOverElement.innerHTML = 'Вы победили!';
-        } else {
-            this.gameOverElement.innerHTML = 'Игра окончена!';
-        }
-
+        this.gameOverElement.innerHTML = 'Игра окончена!';
+        
         this.restartElement = createAndAppend({
 			className: 'restart',
 			parentElement: this.gameOverElement,
 			value: 'Новая игра'
         }, 'button');
-            this.restartElement.addEventListener('click', this.restart.bind(this));
+            
+        this.restartElement.addEventListener('click', this.restart.bind(this));
     }
 
-    gameOwer() {
+    gameOver() {
         let losing = true;
         let vin = false;
         for(let i = 0; i < this.size; i++){
@@ -121,9 +118,9 @@ class Game {
             }
         }
         if (vin) {
-            this.restartGame(vin);
+            this.restartGame();
         } else if (losing) {
-            this.restartGame(losing);
+            this.restartGame();
         }
     }
 
@@ -160,7 +157,7 @@ class Game {
         if (hasMoved) {
             this.spawnUnit();
         }
-        this.gameOwer();
+        this.gameOver();
     }
 
     moveLeft() {
@@ -177,7 +174,7 @@ class Game {
 
                     let nextBox = this.field[i][nextBoxKey];
                     if (!nextBox.isEmpty || this.isFirstKey(nextBoxKey)){
-                        if((nextBox.isEmpty && this.isFirstKey(nextBoxKey)) //Последняя строка или пустое значение
+                        if((nextBox.isEmpty && this.isFirstKey(nextBoxKey))
                             || nextBox.isSameTo(currentBox)){
                                 this.field[i][nextBoxKey].merge(currentBox);
                                 hasMoved = true;
@@ -197,7 +194,7 @@ class Game {
         if (hasMoved) {
             this.spawnUnit();
         }
-        this.gameOwer();
+        this.gameOver();
     }
 
     moveDown() {
@@ -214,7 +211,7 @@ class Game {
 
                     let nextBox = this.field[nextBoxKey][j];
                     if (!nextBox.isEmpty || this.isLastKey(nextBoxKey)){
-                        if((nextBox.isEmpty && this.isLastKey(nextBoxKey)) //Последняя строка или пустое значение
+                        if((nextBox.isEmpty && this.isLastKey(nextBoxKey))
                             || nextBox.isSameTo(currentBox)){
                                 this.field[nextBoxKey][j].merge(currentBox);
                                 hasMoved = true;
@@ -234,7 +231,7 @@ class Game {
         if (hasMoved) {
             this.spawnUnit();
         }
-        this.gameOwer();
+        this.gameOver();
     }
 
     moveUp() {
@@ -252,7 +249,7 @@ class Game {
 
                     let nextBox = this.field[nextBoxKey][j];
                     if (!nextBox.isEmpty || this.isFirstKey(nextBoxKey)){
-                        if((nextBox.isEmpty && this.isFirstKey(nextBoxKey)) //Последняя строка или пустое значение
+                        if((nextBox.isEmpty && this.isFirstKey(nextBoxKey)) 
                             || nextBox.isSameTo(currentBox)){
                                 this.field[nextBoxKey][j].merge(currentBox);
                                 hasMoved = true;
@@ -272,7 +269,7 @@ class Game {
         if (hasMoved) {
             this.spawnUnit();
         }
-        this.gameOwer();
+        this.gameOver();
     }
 
     isLastKey(key){

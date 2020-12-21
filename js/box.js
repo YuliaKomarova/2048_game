@@ -20,7 +20,7 @@ class Box{
     }
     set value(value){
         this._value = value;
-        this.element.innerHTML = value == 0 ? '' : value; //печать в ячейку 2/4 или ничего
+        this.element.innerHTML = value == 0 ? '' : value;
         this.element.setAttribute('data-ship', value); //добавление атрибута data-ship (закрашивание ячеек)
     }
 

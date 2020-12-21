@@ -62,7 +62,7 @@
         transition: background-color 0.2s ease-in-out;
     }
 
-    .game .field .game-over{
+    .game-over{
         flex-direction: column;
         display: flex;
         position: absolute;
@@ -73,7 +73,8 @@
         height: 99%;
         font-size: 16vmin;
         border-radius: 2vmin;
-        background:rgba(238, 228, 218, 0.5);
+        border: 3px solid rgb(245, 194, 97);
+        background:rgb(211, 21, 49);
     }
 
     .restart {
